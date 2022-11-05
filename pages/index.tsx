@@ -1,8 +1,10 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
+  console.log('test');
   return (
     <div className={styles.container}>
       <Head>
@@ -11,14 +13,23 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <main>
+        <h1>Home Page</h1>
+      </main>
+
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <h1 className={styles.title}>Welcome to Next.js!</h1>
 
         <p className={styles.description}>
           Get started by editing{' '}
           <code className={styles.code}>pages/index.tsx</code>
+        </p>
+
+        <p className={styles.description}>
+          Want to check out a different page? Click here{' '}
+          <code className={`${styles.code} about-link`}>
+            <Link href="/about">About</Link>
+          </code>
         </p>
 
         <div className={styles.grid}>
@@ -67,5 +78,5 @@ export default function Home() {
         </a>
       </footer>
     </div>
-  )
+  );
 }
