@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "prepare": "husky install",
+    "dev": "concurrently --kill-others-on-fail \"yarn backend\"  \"yarn frontend\"",
     "frontend": "yarn workspace frontend dev",
     "frontend:build": "yarn workspace frontend build",
     "frontend:start": "yarn workspace frontend start",
@@ -15,8 +16,12 @@
     "frontend:test": "yarn workspace frontend test",
     "frontend:test:ci": "yarn workspace frontend test:ci",
     "frontend:cypress": "yarn workspace frontend cypress",
+    "backend": "yarn workspace backend dev",
     "backend:lint": "yarn workspace backend lint",
     "backend:lint:fix": "yarn workspace backend lint:fix",
     "backend:format": "yarn workspace backend format"
+  },
+  "dependencies": {
+    "concurrently": "7.5.0"
   }
 }

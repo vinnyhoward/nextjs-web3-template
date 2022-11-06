@@ -6,7 +6,8 @@
     "scripts": {
         "lint": "solhint 'contracts/*.sol'",
         "lint:fix": "solhint 'contracts/**/*.sol' --fix",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "dev": "hardhat node --watch"
     },
     "author": "",
     "license": "ISC",
