@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "workspaces": [
+    "backend",
     "frontend"
   ],
   "scripts": {
@@ -13,6 +14,9 @@
     "frontend:lint": "yarn workspace frontend lint",
     "frontend:test": "yarn workspace frontend test",
     "frontend:test:ci": "yarn workspace frontend test:ci",
-    "frontend:cypress": "yarn workspace frontend cypress"
+    "frontend:cypress": "yarn workspace frontend cypress",
+    "backend:lint": "yarn workspace backend lint",
+    "backend:lint:fix": "yarn workspace backend lint:fix",
+    "backend:format": "yarn workspace backend format"
   }
 }
