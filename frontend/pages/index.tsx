@@ -1,10 +1,16 @@
 import Head from 'next/head';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { InjectedConnector } from 'wagmi/connectors/injected';
 import styles from '../styles/Home.module.css';
 
 export default function Home() {
-  console.log('test');
+  const { address } = useAccount();
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  });
+  const { disconnect } = useDisconnect();
+  console.log('basic nft address', process.env.NEXT_PUBLIC_BASIC_NFT_ADDRESS);
   return (
     <div className={styles.container}>
       <Head>
@@ -13,55 +19,27 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1>Home Page</h1>
-      </main>
-
       <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to Next.js!</h1>
+        <h1 className={styles.title}>Basic NFT drop!</h1>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
+        {address && (
+          <div className={styles.description}>
+            You&apos;re connected to{' '}
+            <code className={`${styles.code} about-link`}>{address}</code>
+          </div>
+        )}
 
-        <p className={styles.description}>
-          Want to check out a different page? Click here{' '}
-          <code className={`${styles.code} about-link`}>
-            <Link href="/about">About</Link>
-          </code>
-        </p>
+        <div
+          onClick={() => (address ? disconnect() : connect())}
+          className={styles.grid}
+        >
+          <div className={styles.card}>
+            <h2>{address ? 'Disconnect' : 'Connect'}</h2>
+          </div>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+          <div className={styles.card}>
+            <h2>Mint</h2>
+          </div>
         </div>
       </main>
 
