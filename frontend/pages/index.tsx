@@ -1,8 +1,23 @@
+// packages
 import Head from 'next/head';
 import Image from 'next/image';
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import {
+  useAccount,
+  useConnect,
+  useDisconnect,
+  usePrepareContractWrite,
+  useContractWrite,
+  useWaitForTransaction,
+} from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
+
+// styles
 import styles from '../styles/Home.module.css';
+
+// abi
+// TODO: IF you wanted to you could conditionally pull from different networks
+// but for now I will pull from local host
+import basicNFTAbi from '../../backend/deployments/localhost/BasicNft.json';
 
 export default function Home() {
   const { address } = useAccount();
@@ -10,7 +25,27 @@ export default function Home() {
     connector: new InjectedConnector(),
   });
   const { disconnect } = useDisconnect();
-  console.log('basic nft address', process.env.NEXT_PUBLIC_BASIC_NFT_ADDRESS);
+  // const abi = JSON.parse(basicNFTAbi);
+  const { config } = usePrepareContractWrite({
+    address: basicNFTAbi.address,
+    abi: [
+      {
+        name: 'mint',
+        type: 'function',
+        stateMutability: 'nonpayable',
+        inputs: [],
+        outputs: [],
+      },
+    ],
+    functionName: 'mint',
+  });
+  console.log('config:', config);
+  const { data, write } = useContractWrite(config);
+
+  const { isLoading, isSuccess } = useWaitForTransaction({
+    hash: data?.hash,
+  });
+
   return (
     <div className={styles.container}>
       <Head>
@@ -37,11 +72,20 @@ export default function Home() {
             <h2>{address ? 'Disconnect' : 'Connect'}</h2>
           </div>
 
-          <div className={styles.card}>
-            <h2>Mint</h2>
+          <div onClick={() => write && write()} className={styles.card}>
+            <h2>{isLoading ? 'Minting...' : 'Mint'}</h2>
           </div>
         </div>
       </main>
+
+      {isSuccess && (
+        <div>
+          Successfully minted your NFT!
+          <div>
+            <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
+          </div>
+        </div>
+      )}
 
       <footer className={styles.footer}>
         <a
