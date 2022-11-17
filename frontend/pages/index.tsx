@@ -17,7 +17,7 @@ import styles from '../styles/Home.module.css';
 // abi
 // TODO: IF you wanted to you could conditionally pull from different networks
 // but for now I will pull from local host
-import basicNFTAbi from '../../backend/deployments/localhost/BasicNft.json';
+import marketPlaceAbi from '../../backend/deployments/localhost/NFTMarketplace.json';
 
 export default function Home() {
   const { address } = useAccount();
@@ -25,9 +25,9 @@ export default function Home() {
     connector: new InjectedConnector(),
   });
   const { disconnect } = useDisconnect();
-  // const abi = JSON.parse(basicNFTAbi);
+  // const abi = JSON.parse(marketPlaceAbi);
   const { config } = usePrepareContractWrite({
-    address: basicNFTAbi.address,
+    address: marketPlaceAbi.address,
     abi: [
       {
         name: 'mint',
@@ -39,7 +39,7 @@ export default function Home() {
     ],
     functionName: 'mint',
   });
-  console.log('config:', config);
+
   const { data, write } = useContractWrite(config);
 
   const { isLoading, isSuccess } = useWaitForTransaction({
