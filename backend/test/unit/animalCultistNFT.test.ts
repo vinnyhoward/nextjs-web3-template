@@ -1,5 +1,3 @@
-// We are going to skimp a bit on these tests...
-
 import { assert, expect } from "chai";
 import { network, deployments, ethers } from "hardhat";
 import { developmentChains } from "../../helper-hardhat-config";
