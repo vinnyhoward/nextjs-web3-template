@@ -43,7 +43,7 @@ contract NFTMarketplace is ReentrancyGuard {
     // NFT Contract => NFT Token ID => Listing
     mapping(address => mapping(uint256 => Listing)) public s_listings;
     // Seller Address => Amounted Earned
-    mapping (address => uint256) private s_earnings;
+    mapping(address => uint256) private s_earnings;
 
     modifier notListed(
         address nftAddress,
@@ -63,7 +63,8 @@ contract NFTMarketplace is ReentrancyGuard {
         address spender
     ) {
         IERC721 nft = IERC721(nftAddress);
-        if (nft.ownerOf(tokenId) != spender) {
+        address owner = nft.ownerOf(tokenId);
+        if (spender != owner) {
             revert NFTMarketplace__NotOwner(nftAddress, tokenId);
         }
         _;
@@ -133,13 +134,19 @@ contract NFTMarketplace is ReentrancyGuard {
             );
         }
         // Track the earnings of the seller
-        s_earnings[listedItem.seller] = s_earnings[listedItem.seller] + msg.value;
+        s_earnings[listedItem.seller] =
+            s_earnings[listedItem.seller] +
+            msg.value;
         delete s_listings[nftAddress][tokenId];
 
         // https://fravoll.github.io/solidity-patterns/pull_over_push.html
         // Sending the money to the user ❌
         // Having them widthdraw it ✅
-        IERC721(nftAddress).safeTransferFrom(listedItem.seller, msg.sender, tokenId);
+        IERC721(nftAddress).safeTransferFrom(
+            listedItem.seller,
+            msg.sender,
+            tokenId
+        );
         emit ItemBought(msg.sender, nftAddress, tokenId, listedItem.price);
     }
 
@@ -219,7 +226,11 @@ contract NFTMarketplace is ReentrancyGuard {
      * @dev - returns the earnings for the seller
      * @param - sellerAddress - address of the owner
      */
-    function getEarnings(address sellerAddress) external view returns (uint256) {
+    function getEarnings(address sellerAddress)
+        external
+        view
+        returns (uint256)
+    {
         return s_earnings[sellerAddress];
     }
 }
