@@ -72,7 +72,7 @@ import {
       });
 
       describe("List Item", function () {
-        it("lists NFT onto marketplace and emit an event", async function () {
+        it("User buys NFT that was just listed", async function () {
           expect(
             await nftMarketplace.listItem(
               animalCultistNft.address,
@@ -81,30 +81,19 @@ import {
             )
           ).to.to.emit(nftMarketplace, "ItemListed");
 
-          // const error = `NFTMarketplace__AlreadyListed("${nftMarketplace.address}", ${TOKEN_ID})`;
-          // await expect(
-          //   await nftMarketplace.listItem(
-          //     animalCultistNft.address,
-          //     TOKEN_ID,
-          //     PRICE
-          //   )
-          // ).to.be.revertedWith(error);
+          const playerConnectedNftMarketplace = nftMarketplace.connect(user);
+          await playerConnectedNftMarketplace.buyItem(
+            animalCultistNft.address,
+            TOKEN_ID,
+            { value: PRICE }
+          );
+          const newOwner = await animalCultistNft.ownerOf(TOKEN_ID);
+          const deployerEarnings = await nftMarketplace.getEarnings(
+            deployer.address
+          );
+
+          assert(newOwner.toString() === user.address);
+          assert(deployerEarnings.toString() === PRICE.toString());
         });
-
-        // it("User buys NFT that was just listed", async function () {
-        //   const playerConnectedNftMarketplace = nftMarketplace.connect(user);
-        //   await playerConnectedNftMarketplace.buyItem(
-        //     animalCultistNft.address,
-        //     TOKEN_ID,
-        //     { value: PRICE }
-        //   );
-        //   const newOwner = await animalCultistNft.ownerOf(TOKEN_ID);
-        //   const deployerEarnings = await nftMarketplace.getEarnings(
-        //     deployer.address
-        //   );
-
-        //   assert(newOwner.toString() === user.address);
-        //   assert(deployerEarnings.toString() === PRICE.toString());
-        // });
       });
     });

@@ -59,7 +59,7 @@ export default function Home() {
 
         {address && (
           <div className={styles.description}>
-            You&apos;re connected to{' '}
+            You&quot;re connected to{' '}
             <code className={`${styles.code} about-link`}>{address}</code>
           </div>
         )}
