@@ -23,6 +23,7 @@ import {
         deployer = accounts[0];
         user = accounts[1];
         await deployments.fixture(["mocks", "cultistnft", "marketplace"]);
+
         // Initiate NFT Marketplace
         nftMarketplace = await ethers.getContract("NFTMarketplace");
         nftMarketplace = nftMarketplace.connect(deployer);
@@ -33,6 +34,8 @@ import {
           "AnimalCultistNFT",
           deployer
         );
+
+        // Mint basic  nft
         const fee = await animalCultistNft.getMintFee();
         await expect(
           animalCultistNft.requestNFT({ value: fee.toString() })
@@ -96,4 +99,6 @@ import {
           assert(deployerEarnings.toString() === PRICE.toString());
         });
       });
+
+      // Write update listing test
     });

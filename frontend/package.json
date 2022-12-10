@@ -20,6 +20,7 @@
     "next": "13.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "styled-components": "^5.3.6",
     "typescript": "4.8.4",
     "wagmi": "^0.7.13",
     "web3-eth-contract": "^1.8.0"
@@ -40,10 +41,12 @@
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
+    "@types/styled-components": "^5.1.26",
     "@types/testing-library__jest-dom": "^5.14.5",
     "@types/testing-library__react": "^10.2.0",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "babel-loader": "^8.3.0",
+    "babel-plugin-styled-components": "^2.0.7",
     "cypress": "^10.11.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest-dom": "^4.0.2",
@@ -59,5 +62,8 @@
     "hooks": {
       "pre-commit": "lint-staged"
     }
+  },
+  "resolutions": {
+    "styled-components": "^5"
   }
 }

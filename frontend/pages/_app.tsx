@@ -2,6 +2,8 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { WagmiConfig, createClient } from 'wagmi';
 import { getDefaultProvider } from 'ethers';
+import { ThemeProvider } from 'styled-components';
+import theme from '../styles/theme';
 
 const client = createClient({
   autoConnect: true,
@@ -10,8 +12,10 @@ const client = createClient({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig client={client}>
-      <Component {...pageProps} />
-    </WagmiConfig>
+    <ThemeProvider {...{ theme }}>
+      <WagmiConfig {...{ client }}>
+        <Component {...pageProps} />
+      </WagmiConfig>
+    </ThemeProvider>
   );
 }
