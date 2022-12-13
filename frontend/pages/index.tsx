@@ -3,13 +3,10 @@ import Head from 'next/head';
 import Image from 'next/image';
 import {
   useAccount,
-  useConnect,
-  useDisconnect,
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
 } from 'wagmi';
-import { InjectedConnector } from 'wagmi/connectors/injected';
 
 // styles
 import styles from '../styles/Home.module.css';
@@ -17,19 +14,12 @@ import styles from '../styles/Home.module.css';
 import Layout from '../components/Layout/Layout';
 
 // abi
-// TODO: IF you wanted to you could conditionally pull from different networks
-// but for now I will pull from local host
-import marketPlaceAbi from '../../backend/deployments/localhost/NFTMarketplace.json';
+import basicNftAbi from '../../backend/deployments/localhost/BasicNft.json';
 
 export default function Home() {
   const { address } = useAccount();
-  const { connect } = useConnect({
-    connector: new InjectedConnector(),
-  });
-  const { disconnect } = useDisconnect();
-  // const abi = JSON.parse(marketPlaceAbi);
   const { config } = usePrepareContractWrite({
-    address: marketPlaceAbi.address,
+    address: basicNftAbi.address,
     abi: [
       {
         name: 'mint',
@@ -67,18 +57,13 @@ export default function Home() {
             </div>
           )}
 
-          <div
-            onClick={() => (address ? disconnect() : connect())}
-            className={styles.grid}
-          >
-            <div className={styles.card}>
-              <h2>{address ? 'Disconnect' : 'Connect'}</h2>
+          {write && (
+            <div className={styles.grid}>
+              <div onClick={() => write()} className={styles.card}>
+                <h2>{isLoading ? 'Minting...' : 'Mint'}</h2>
+              </div>
             </div>
-
-            <div onClick={() => write && write()} className={styles.card}>
-              <h2>{isLoading ? 'Minting...' : 'Mint'}</h2>
-            </div>
-          </div>
+          )}
         </main>
 
         {isSuccess && (

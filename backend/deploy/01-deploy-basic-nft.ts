@@ -3,7 +3,7 @@ import verify from "../utils/verify";
 import { DeployFunction } from "hardhat-deploy/types";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 
-const deployNFTMarketplace: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployBasicNft: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     const { deployments, getNamedAccounts, network } = hre;
     const { deploy, log } = deployments;
     const { deployer } = await getNamedAccounts();
@@ -16,17 +16,17 @@ const deployNFTMarketplace: DeployFunction = async function (hre: HardhatRuntime
     );
 
     const args: any[] = [];
-    const nftMarketplace = await deploy("NFTMarketplace", {
+    const basicNft = await deploy("BasicNFT", {
         from: deployer,
         args: args,
         log: true,
         waitConfirmations: waitBlockConfirmations || 1,
     });
-    log("address:", nftMarketplace.address);
+    log("address:", basicNft.address);
     // Verify the deployment
     if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
         log("Verifying...");
-        await verify(nftMarketplace.address, args);
+        await verify(basicNft.address, args);
     }
 
     log(
@@ -34,5 +34,5 @@ const deployNFTMarketplace: DeployFunction = async function (hre: HardhatRuntime
     );
 };
 
-export default deployNFTMarketplace;
-deployNFTMarketplace.tags = ["all", "marketplace", "main"];
+export default deployBasicNft;
+deployBasicNft.tags = ["all", "basicnft", "main"];
