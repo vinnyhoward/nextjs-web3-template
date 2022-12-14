@@ -1,20 +1,33 @@
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
-import { InjectedConnector } from 'wagmi/connectors/injected';
+import { useWeb3React } from '@web3-react/core';
 import { StyledNavBar } from './NavBar.styles';
+import { connectors } from '../../utils/connectors';
 
 const NavBar = () => {
-  const { address } = useAccount();
-  const { connect } = useConnect({
-    connector: new InjectedConnector(),
-  });
-  const { disconnect } = useDisconnect();
+  const [, setModalOpen] = useState(false);
+  const { account, activate, deactivate } = useWeb3React();
+
+  const refreshState = () => {
+    window.localStorage.setItem('provider', '');
+  };
+
+  const disconnect = () => {
+    refreshState();
+    deactivate();
+  };
+
+  useEffect(() => {
+    const provider: string | null = window.localStorage.getItem('provider');
+    if (provider) activate(connectors[provider]);
+  }, []);
+
   return (
     <StyledNavBar>
       <div className="logo">NextJS/Hardhat Template</div>
       <div className="account-section">
         <div
-          onClick={() => (address ? disconnect() : connect())}
+          onClick={() => (account ? disconnect() : setModalOpen(true))}
           className="icon"
         >
           <Image

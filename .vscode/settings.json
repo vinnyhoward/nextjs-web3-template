@@ -3,6 +3,9 @@
     "basicnft",
     "cultistnft",
     "nextjs",
-    "Wagmi"
+    "qrcode",
+    "Wagmi",
+    "walletconnect",
+    "walletlink"
   ]
 }

@@ -1,12 +1,6 @@
 // packages
 import Head from 'next/head';
 import Image from 'next/image';
-import {
-  useAccount,
-  usePrepareContractWrite,
-  useContractWrite,
-  useWaitForTransaction,
-} from 'wagmi';
 
 // styles
 import styles from '../styles/Home.module.css';
@@ -14,30 +8,9 @@ import styles from '../styles/Home.module.css';
 import Layout from '../components/Layout/Layout';
 
 // abi
-import basicNftAbi from '../../backend/deployments/localhost/BasicNft.json';
+// import basicNftAbi from '../../backend/deployments/localhost/BasicNft.json';
 
 export default function Home() {
-  const { address } = useAccount();
-  const { config } = usePrepareContractWrite({
-    address: basicNftAbi.address,
-    abi: [
-      {
-        name: 'mint',
-        type: 'function',
-        stateMutability: 'nonpayable',
-        inputs: [],
-        outputs: [],
-      },
-    ],
-    functionName: 'mint',
-  });
-
-  const { data, write } = useContractWrite(config);
-
-  const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
-  });
-
   return (
     <Layout>
       <div className={styles.container}>
@@ -50,7 +23,7 @@ export default function Home() {
         <main className={styles.main}>
           <h1 className={styles.title}>Basic NFT drop!</h1>
 
-          {address && (
+          {/* {address && (
             <div className={styles.description}>
               You&quot;re connected to{' '}
               <code className={`${styles.code} about-link`}>{address}</code>
@@ -63,17 +36,17 @@ export default function Home() {
                 <h2>{isLoading ? 'Minting...' : 'Mint'}</h2>
               </div>
             </div>
-          )}
+          )} */}
         </main>
 
-        {isSuccess && (
+        {/* {isSuccess && (
           <div>
             Successfully minted your NFT!
             <div>
               <a href={`https://etherscan.io/tx/${data?.hash}`}>Etherscan</a>
             </div>
           </div>
-        )}
+        )} */}
 
         <footer className={styles.footer}>
           <a
